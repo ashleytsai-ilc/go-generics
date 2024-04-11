@@ -1,23 +1,20 @@
 package generics
 
 func Sum(nums []int) int {
-	sum := 0
-	for _, num := range nums {
-		sum += num
+	add := func(acc, x int) int {
+		return acc + x
 	}
-	return sum
+	return Reduce(nums, add, 0)
 }
 
 func SumAllTails(numbersToSum ...[]int) []int {
-	var sums []int
-	for _, nums := range numbersToSum {
-		if len(nums) == 0 {
-			sums = append(sums, 0)
+	sumTail := func(acc, x []int) []int {
+		if len(x) == 0 {
+			return append(acc, 0)
 		} else {
-			tail := nums[1:]
-			sums = append(sums, Sum(tail))
+			tail := x[1:]
+			return append(acc, Sum(tail))
 		}
 	}
-
-	return sums
+	return Reduce(numbersToSum, sumTail, []int{})
 }
